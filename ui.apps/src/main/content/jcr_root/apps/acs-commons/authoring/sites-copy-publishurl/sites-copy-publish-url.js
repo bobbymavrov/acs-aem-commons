@@ -38,30 +38,42 @@
             });
         result.done(function(text) {
             var jsonResponse = JSON.parse(text);
-                var content = '';
+            var content = '';
+            var labelWidth = 0;
+            var inputWidth = 0;
 
-                Object.keys(jsonResponse).forEach(function(key) {
-                   content += '<div class="coral-Form-fieldwrapper copy-publish-url-group">' +
-                               '<label class="coral-Form-fieldlabel">' + key + ' : </label>' +
-                               '<input type="text" class="coral-Form-field" value="' + jsonResponse[key] + '" readonly style="width: ' + (jsonResponse[key].length - 10) + 'ch;" />' +
-                               '<button type="button" class="sites-publishurl-copy-cmd coral3-Button coral3-Button--primary" data-copy-target="' + key + '"><coral-icon class="coral3-Icon coral3-Icon--attach coral3-Icon--sizeXS" icon="attach" size="XS" autoarialabel="off" alt=""></coral-icon><coral-button-label>Copy</coral-button-label></button>' +
-                               '</div>';
-                });
-                modalBody.html(content);
-                document.querySelectorAll('.sites-publishurl-copy-cmd').forEach(function(button) {
-                        button.addEventListener('click', function() {
-                            var key = this.getAttribute('data-copy-target');
-                            var inputField = this.previousElementSibling;
-                            var textToCopy = inputField.value;
-                            inputField.select();
-                            try {
-                                navigator.clipboard.writeText(textToCopy);
-                                console.log("Text copied to clipboard");
-                              } catch (err) {
-                                console.error("Failed to copy: ", err);
-                              }
-                        });
+            Object.keys(jsonResponse).forEach(function(key) {
+                if (key.length > labelWidth) {
+                    labelWidth = key.length;
+                }
+                if (jsonResponse[key].length > inputWidth) {
+                    inputWidth = jsonResponse[key].length;
+                }
+            });
+            inputWidth = inputWidth > 0 ? inputWidth - 10 : 0;
+
+            Object.keys(jsonResponse).forEach(function(key) {
+               content += '<div class="coral-Form-fieldwrapper copy-publish-url-group">' +
+                           '<label class="coral-Form-fieldlabel" style="width: ' + labelWidth + 'ch; display: inline-block">' + key + ' : </label>' +
+                           '<input type="text" class="coral-Form-field" value="' + jsonResponse[key] + '" readonly style="width: ' + inputWidth + 'ch;" />' +
+                           '<button type="button" class="sites-publishurl-copy-cmd coral3-Button coral3-Button--primary" data-copy-target="' + key + '"><coral-icon class="coral3-Icon coral3-Icon--attach coral3-Icon--sizeXS" icon="attach" size="XS" autoarialabel="off" alt=""></coral-icon><coral-button-label>Copy</coral-button-label></button>' +
+                           '</div>';
+            });
+            modalBody.html(content);
+            document.querySelectorAll('.sites-publishurl-copy-cmd').forEach(function(button) {
+                    button.addEventListener('click', function() {
+                        var key = this.getAttribute('data-copy-target');
+                        var inputField = this.previousElementSibling;
+                        var textToCopy = inputField.value;
+                        inputField.select();
+                        try {
+                            navigator.clipboard.writeText(textToCopy);
+                            console.log("Text copied to clipboard");
+                          } catch (err) {
+                            console.error("Failed to copy: ", err);
+                          }
                     });
+            });
         });
         result.fail(function() {
             modalBody.html('<p class="acs-aem-commons__sites-copy-published-url__text--failure">' + failureMessage + '</p>');

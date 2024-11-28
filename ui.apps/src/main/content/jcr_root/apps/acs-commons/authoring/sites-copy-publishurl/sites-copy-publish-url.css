@@ -35,17 +35,12 @@
 }
 
 .copy-publish-url-group {
+    display: flex;
+    align-items: center;
     margin-bottom: 5px;
 }
 
-.copy-publish-url-group .coral-Form-fieldlabel,
 .copy-publish-url-group .coral-Form-field,
 .copy-publish-url-group .sites-publishurl-copy-cmd {
     margin-right: 10px;
-}
-
-.copy-publish-url-group .coral-Form-field {
-    width: auto;
-    min-width: 10ch;
-    max-width: 100%;
 }

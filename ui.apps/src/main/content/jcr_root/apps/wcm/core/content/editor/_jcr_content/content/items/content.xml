@@ -64,7 +64,7 @@
             <dialogpublishurl
                 granite:id="aem-sites-show-publish-url"
                 jcr:primaryType="nt:unstructured"
-                jcr:title="Page URLs"
+                jcr:title="Publish URLs"
                 sling:resourceType="granite/ui/components/coral/foundation/dialog"
                 closable="{Boolean}true">
                 <granite:data
