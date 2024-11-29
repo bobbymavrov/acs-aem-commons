@@ -22,7 +22,8 @@
 
     $( document ).one('foundation-toggleable-show', '#aem-sites-show-publish-url', function(e) {
         var modalBody = $(e.target).find('coral-dialog-content'),
-            failureMessage = Granite.I18n.get('An error occurred determining the page\'s publish URL.'),
+            failureMessage = Granite.I18n.get('An error occurred determining the page\'s publish URLs.'),
+            missingConfigMessage = Granite.I18n.get('Missing configs for the Publish URL servlet or Externalizer.'),
             publishUrl = Granite.HTTP.externalize('/apps/acs-commons/components/utilities/sites-publish-url.txt'),
             path = $(e.target).data('assetpath');
 
@@ -41,6 +42,11 @@
             var content = '';
             var labelWidth = 0;
             var inputWidth = 0;
+
+            if (jsonResponse.size === 0) {
+                modalBody.html('<p class="acs-aem-commons__sites-copy-published-url__text--failure">' + missingConfigMessage + '</p>');
+                return;
+            }
 
             Object.keys(jsonResponse).forEach(function(key) {
                 if (key.length > labelWidth) {
